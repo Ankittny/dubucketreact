@@ -100,7 +100,7 @@ const Cart = (props) => {
         localStorage.removeItem('addressid');
         localStorage.removeItem('cartItems');
 
-        window.location.href="http://localhost:3000/cart";
+        window.location.href="https://dubucket.com/cart";
       });
     }
   useEffect(() => {  
@@ -158,15 +158,15 @@ const Cart = (props) => {
     const auth = JSON.parse(localStorage.getItem('auth'));
     //console.log("user data =====================>", auth.user.phone.toString());
     let intValue = Math.floor(total); // Convert float to integer using Math.floor
-    let finelprice = 20 * 100;
+    let finelprice = intValue * 100;
     const payload = {
-      "merchantId": "PGTESTPAYUAT91",
+      "merchantId": "M22PH3AAGGUAZ",
       "merchantTransactionId": "MT7850590068188114",
       "merchantUserId": "MUID123",
       "amount": finelprice.toString(),
-      "redirectUrl": "http://localhost:3000/order/success",
+      "redirectUrl": "https://dubucket.com/order/success",
       "redirectMode": "REDIRECT",
-      "callbackUrl": "http://localhost:3000/order/success",
+      "callbackUrl": "https://dubucket.com/order/success",
       "mobileNumber": auth.user.phone.toString(),
       "paymentInstrument": {
         "type": "PAY_PAGE"
@@ -177,7 +177,7 @@ const Cart = (props) => {
     //console.log(base64EncodedPayload); 
 
     const saltIndex = '1';
-    const concatenatedString = base64EncodedPayload + '/pg/v1/pay05992a0b-5254-4f37-86fb-e23bb79ea7e7';
+    const concatenatedString = base64EncodedPayload + '/pg/v1/pay54309090-362a-40bc-a7a0-f72b2d57ea8d';
 
     const sha256Value = CryptoJS.SHA256(concatenatedString).toString(CryptoJS.enc.Hex);
     //console.log(sha256Value);
@@ -236,7 +236,7 @@ const Cart = (props) => {
       setLoadingProductId(null);
       localStorage.removeItem('addressid');
       localStorage.removeItem('cartItems')
-      window.location.href = "http://localhost:3000/order/success";
+      window.location.href = "https://dubucket.com/order/success";
     }).catch((error) => {
       console.log('the catch error is ===>', error)
     });
@@ -417,7 +417,7 @@ const UpdateAddressData = async (id) => {
       setAddressType(response?.data.address.type);
       setLocation(response?.data.address.address);
       // setEditAddress(response?.data.address);
-      //window.location.href = "http://localhost:3000/order/success";
+      //window.location.href = "https://dubucket.com/order/success";
     }).catch((error) => {
       console.log('the catch error is ===>', error)
     });

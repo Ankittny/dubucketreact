@@ -14,7 +14,7 @@ const HandleSearch = (event) => {
 }
 
 const Seacrh = () => {
-   const URl = "http://localhost:3000/"+"search?search="+SearchData;
+   const URl = "https://dubucket.com/"+"search?search="+SearchData;
    window.location.href=URl
 }
 

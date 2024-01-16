@@ -100,7 +100,7 @@ const Cart = (props) => {
       localStorage.removeItem('addressid');
       localStorage.removeItem('cartItems');
 
-      window.location.href = "http://localhost:3000/cart";
+      window.location.href = "https://dubucket.com/cart";
     });
   }
   useEffect(() => {
@@ -181,7 +181,7 @@ const Cart = (props) => {
       setLoadingProductId(null);
       localStorage.removeItem('addressid');
       localStorage.removeItem('cartItems')
-      window.location.href = "http://localhost:3000/order/success";
+      window.location.href = "https://dubucket.com/order/success";
     }).catch((error) => {
       console.log('the catch error is ===>', error)
     });
@@ -362,7 +362,7 @@ const Cart = (props) => {
       setAddressType(response?.data.address.type);
       setLocation(response?.data.address.address);
       // setEditAddress(response?.data.address);
-      //window.location.href = "http://localhost:3000/order/success";
+      //window.location.href = "https://dubucket.com/order/success";
     }).catch((error) => {
       console.log('the catch error is ===>', error)
     });
@@ -408,7 +408,7 @@ const Cart = (props) => {
 
           localStorage.removeItem('addressid');
           localStorage.removeItem('cartItems')
-          window.location.href = "http://localhost:3000/order/success";
+          window.location.href = "https://dubucket.com/order/success";
 
           // console.log("this is test,",response);
         }).catch((error) => {

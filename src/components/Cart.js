@@ -51,13 +51,13 @@ const Cart = (props) => {
   const handleClose1 = () => setShow1(false);
   const handleShow = () => setShow(true);
 
- 
+
   const removeCartQty = id => {
     const auth = JSON.parse(localStorage.getItem('auth'));
     postApi.decrementQyt(id, auth.access_token).then((response) => {
       dispatch(addToCart(id, auth.access_token));
-       //console.log("incrimant", response);
-     getCartItems();
+      //console.log("incrimant", response);
+      getCartItems();
     }).catch((error) => {
       delleteItem(id);
       console.log('the catch error is ===>', error)
@@ -68,8 +68,8 @@ const Cart = (props) => {
     const auth = JSON.parse(localStorage.getItem('auth'));
     postApi.deleteCartItem(id, auth.access_token).then((response) => {
       dispatch(addToCart(id, auth.access_token));
-       //console.log("incrimant", response);
-     getCartItems();
+      //console.log("incrimant", response);
+      getCartItems();
     }).catch((error) => {
       console.log('the catch error is ===>', error)
     });
@@ -79,31 +79,31 @@ const Cart = (props) => {
     const auth = JSON.parse(localStorage.getItem('auth'));
     postApi.incrementQyt(id, auth.access_token).then((response) => {
       dispatch(addToCart(id, auth.access_token));
-       //console.log("incrimant", response);
-     getCartItems();
+      //console.log("incrimant", response);
+      getCartItems();
     }).catch((error) => {
       console.log('the catch error is ===>', error)
     });
   };
 
-  
-    const getCartItems = () => {
-      const auth = JSON.parse(localStorage.getItem('auth'));
-      postApi.GetCart(auth?.access_token).then((res) => {
-        if (res.status === 200) {
-          setCartitem(res.data.cartProducts);
-          // setIsLoading(false);
-        }
-      }).catch((err) => {
-        setCartitem([]);
-        console.log("this is test",err);
-        localStorage.removeItem('addressid');
-        localStorage.removeItem('cartItems');
 
-        window.location.href="https://dubucket.com/cart";
-      });
-    }
-  useEffect(() => {  
+  const getCartItems = () => {
+    const auth = JSON.parse(localStorage.getItem('auth'));
+    postApi.GetCart(auth?.access_token).then((res) => {
+      if (res.status === 200) {
+        setCartitem(res.data.cartProducts);
+        // setIsLoading(false);
+      }
+    }).catch((err) => {
+      setCartitem([]);
+      console.log("this is test", err);
+      localStorage.removeItem('addressid');
+      localStorage.removeItem('cartItems');
+
+      window.location.href = "http://localhost:3000/cart";
+    });
+  }
+  useEffect(() => {
     getCartItems();
   }, []);
 
@@ -154,64 +154,9 @@ const Cart = (props) => {
     getTotal(cartitem);
   }, [cartitem]);
 
-  const handleAPICallPhonepe = async (total) => {
-    const auth = JSON.parse(localStorage.getItem('auth'));
-    //console.log("user data =====================>", auth.user.phone.toString());
-    let intValue = Math.floor(total); // Convert float to integer using Math.floor
-    let finelprice = intValue * 100;
-    const payload = {
-      "merchantId": "M22PH3AAGGUAZ",
-      "merchantTransactionId": "MT7850590068188114",
-      "merchantUserId": "MUID123",
-      "amount": finelprice.toString(),
-      "redirectUrl": "https://dubucket.com/order/success",
-      "redirectMode": "REDIRECT",
-      "callbackUrl": "https://dubucket.com/order/success",
-      "mobileNumber": auth.user.phone.toString(),
-      "paymentInstrument": {
-        "type": "PAY_PAGE"
-      }
-    };
 
-    const base64EncodedPayload = btoa(JSON.stringify(payload));
-    //console.log(base64EncodedPayload); 
 
-    const saltIndex = '1';
-    const concatenatedString = base64EncodedPayload + '/pg/v1/pay54309090-362a-40bc-a7a0-f72b2d57ea8d';
 
-    const sha256Value = CryptoJS.SHA256(concatenatedString).toString(CryptoJS.enc.Hex);
-    //console.log(sha256Value);
-    const headers = {
-      'Content-Type': 'application/json',
-      'X-VERIFY': `${sha256Value}###1`
-    };
-
-    try {
-      const response = await axios.post('https://api.phonepe.com/apis/hermes/pg/v1/pay', {
-        request: base64EncodedPayload
-      }, {
-        headers: headers
-      });
-      if (response.data.success === true) {
-        setButton(response.data.data.instrumentResponse.redirectInfo.url);
-        setView(response.data.success);
-        //console.log('Payment response ankit:', response.data.success);
-      } else {
-        setButton("");
-        setView(false);
-      }
-      // Handle the payment response as needed
-    } catch (error) {
-      console.error('Error making payment:', error);
-      // Handle error cases
-    }
-  };
-
-  useEffect(() => {
-    // const timeoutId = setTimeout(() => {
-    handleAPICallPhonepe(total);
-    // }, 3000);
-  }, [total]);
 
 
 
@@ -236,7 +181,7 @@ const Cart = (props) => {
       setLoadingProductId(null);
       localStorage.removeItem('addressid');
       localStorage.removeItem('cartItems')
-      window.location.href = "https://dubucket.com/order/success";
+      window.location.href = "http://localhost:3000/order/success";
     }).catch((error) => {
       console.log('the catch error is ===>', error)
     });
@@ -306,7 +251,7 @@ const Cart = (props) => {
         state: 13,
         city: 17
       });
-     // console.log(data); // Check the constructed data for correctness
+      // console.log(data); // Check the constructed data for correctness
       // Assuming 'auth.access_token' contains the authorization token
       await postApi.saveAddress(auth.access_token, data)
         .then((response) => {
@@ -326,62 +271,62 @@ const Cart = (props) => {
   }
 
 
-const UpdateAddressData = async (id) => {
-  
-  alert(id);
-  const auth = JSON.parse(localStorage.getItem('auth'));
-  if (name == "") {
-    SetNameError("Please enter Full Name");
-    return false;
-  } if (mobile == "") {
-    SetMobileError("Please enter Full Name");
-    return false;
-  } if (location == "") {
-    SetLocationError("Please enter Full Name");
-    return false;
-  } if (pincode == "") {
-    SetPinCodeError("Please enter Full Name");
-    return false;
-  } if (type == "") {
-    SetTypeError("Please Type");
-    return false;
-  } else {
-    SetNameError("");
-    SetMobileError("");
-    SetLocationError("");
-    SetPinCodeError("");
-    SetTypeError("");
+  const UpdateAddressData = async (id) => {
 
-    const data = JSON.stringify({
-      name: name,
-      email: auth?.user?.email,
-      phone: mobile,
-      pincode: pincode,
-      address: location,
-      type: type,
-      country: 2,
-      state: 13,
-      city: 17
-    });
-   // console.log(data); // Check the constructed data for correctness
-    // Assuming 'auth.access_token' contains the authorization token
-    await postApi.updateAddress(id,auth.access_token, data)
-      .then((response) => {
-        setMessage(response?.data?.data?.notification);
-        const timeout = setTimeout(() => {
-          // Reload the page after 3000 milliseconds (3 seconds)
-          window.location.reload();
-        }, 3000);
-        console.log("Response:", response);
-        // Handle successful response (if needed)
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        // Handle the error or log the specific error message
+    alert(id);
+    const auth = JSON.parse(localStorage.getItem('auth'));
+    if (name == "") {
+      SetNameError("Please enter Full Name");
+      return false;
+    } if (mobile == "") {
+      SetMobileError("Please enter Full Name");
+      return false;
+    } if (location == "") {
+      SetLocationError("Please enter Full Name");
+      return false;
+    } if (pincode == "") {
+      SetPinCodeError("Please enter Full Name");
+      return false;
+    } if (type == "") {
+      SetTypeError("Please Type");
+      return false;
+    } else {
+      SetNameError("");
+      SetMobileError("");
+      SetLocationError("");
+      SetPinCodeError("");
+      SetTypeError("");
+
+      const data = JSON.stringify({
+        name: name,
+        email: auth?.user?.email,
+        phone: mobile,
+        pincode: pincode,
+        address: location,
+        type: type,
+        country: 2,
+        state: 13,
+        city: 17
       });
-  }
+      // console.log(data); // Check the constructed data for correctness
+      // Assuming 'auth.access_token' contains the authorization token
+      await postApi.updateAddress(id, auth.access_token, data)
+        .then((response) => {
+          setMessage(response?.data?.data?.notification);
+          const timeout = setTimeout(() => {
+            // Reload the page after 3000 milliseconds (3 seconds)
+            window.location.reload();
+          }, 3000);
+          console.log("Response:", response);
+          // Handle successful response (if needed)
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          // Handle the error or log the specific error message
+        });
+    }
 
-}
+  }
 
 
 
@@ -417,11 +362,108 @@ const UpdateAddressData = async (id) => {
       setAddressType(response?.data.address.type);
       setLocation(response?.data.address.address);
       // setEditAddress(response?.data.address);
-      //window.location.href = "https://dubucket.com/order/success";
+      //window.location.href = "http://localhost:3000/order/success";
     }).catch((error) => {
       console.log('the catch error is ===>', error)
     });
   }
+
+
+
+  const paytmConfig = {
+    root: "", // Your root URL
+    style: {
+      "bodyBackgroundColor": "#fafafb",
+      // ... other style configurations
+    },
+    data: {
+      orderId: orderId, // Unique order ID
+      token: checksum, // Use the obtained checksum here
+      amount: total, // Amount in INR
+      // Add other required data for the transaction
+    },
+    payMode: {
+      // Payment mode configurations
+    },
+    website: "DEFAULT", // Your website name
+    flow: "DEFAULT", // Payment flow
+    merchant: {
+      mid: "rdhmwY94015910450327", // Your merchant ID
+      redirect: false,
+    },
+    handler: {
+      transactionStatus: function (data) {
+
+
+        setLoadingProductId("1")
+        let data1 = JSON.stringify({
+          shipping_address_id: localStorage.getItem('addressid'),
+          billing_address_id: localStorage.getItem('addressid'),
+          transactionid: data.BANKTXNID,
+          shipping_method_id: parseInt(1),
+          coupon: ""
+        });
+        const auth = JSON.parse(localStorage.getItem('auth'));
+        postApi.PaywithPhonepe(data1, auth.access_token).then((response) => {
+
+          localStorage.removeItem('addressid');
+          localStorage.removeItem('cartItems')
+          window.location.href = "http://localhost:3000/order/success";
+
+          // console.log("this is test,",response);
+        }).catch((error) => {
+          console.log('the catch error is ===>', error)
+        });
+
+        console.log('Transaction status:', data);
+        // Handle transaction status callback
+      },
+      notifyMerchant: function (eventName, data) {
+        console.log('Notify merchant:', eventName, data);
+        // Handle merchant notification callback
+      },
+    },
+  };
+
+
+
+
+  const initiatePayment = async () => {
+    try {
+      const response = await axios.get(`https://paytm.kiddostyles.com/webApitest.php?price=${total}`);
+      const { txnToken, orderid } = response.data;
+      setChecksum(txnToken);
+      setorderId(orderid);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error initiating payment:', error);
+    }
+  };
+
+  useEffect(() => {
+    initiatePayment();
+  }, [total]);
+
+  const handlePaytmPayment = () => {
+
+    if (window.Paytm && window.Paytm.CheckoutJS) {
+
+      window.Paytm.CheckoutJS.init(paytmConfig)
+        .then(function onSuccess() {
+          window.Paytm.CheckoutJS.invoke();
+        })
+        .catch(function onError(error) {
+          console.error('Error initializing Paytm payment:', error);
+        });
+    } else {
+      console.error('Paytm CheckoutJS not available');
+    }
+  };
+
+
+
+
+
 
   return (
     <>
@@ -511,7 +553,7 @@ const UpdateAddressData = async (id) => {
                                         </>
                                       ) : (
                                         <>
-                                          <Link onClick={() =>HandlerEdit(Addseritems?.id)} className="text-decoration-none text-info"> <i class="icofont-pencil-alt-5"></i></Link>
+                                          <Link onClick={() => HandlerEdit(Addseritems?.id)} className="text-decoration-none text-info"> <i class="icofont-pencil-alt-5"></i></Link>
                                         </>
                                       )}
                                     </p>
@@ -574,15 +616,11 @@ const UpdateAddressData = async (id) => {
                   </div>
 
                 </div>
-                {/* <Link onClick={handleAPICall} class="btn btn-success btn-lg btn-block mt-3 mb-3">Pay via Phonepe</Link> */}
-                {buttnview ? (
-                  <Link href={UrlButton} class="btn btn-success btn-lg btn-block mt-3 mb-3">Pay via PhonePe</Link>
+                <Link class="btn btn-success btn-lg btn-block mt-3 mb-3" onClick={handlePaytmPayment} disabled={isLoading}>
+                  {isLoading ? 'Initializing Payment...' : 'Pay Now'}</Link>
 
-                ) : (
-                  <Link  class="btn btn-success btn-lg btn-block mt-3 mb-3">Pay via PhonePe</Link>
-                )}
 
-                <Link style={{color:"white"}} onClick={CashOnDelivery} class="btn btn-success btn-lg btn-block mt-3 mb-3" disabled={loadingProductId === "1"}>{loadingProductId === "1" ? 'Loading...' : 'Cash On Delivery'}</Link>
+                <Link style={{ color: "white" }} onClick={CashOnDelivery} class="btn btn-success btn-lg btn-block mt-3 mb-3" disabled={loadingProductId === "1"}>{loadingProductId === "1" ? 'Loading...' : 'Cash On Delivery'}</Link>
                 <p className="text-success text-center">Your Total Savings on this order ₹ {discount + (totalsaving - subtotal)}</p>
               </div>
             </div>
@@ -687,7 +725,7 @@ const UpdateAddressData = async (id) => {
                 </div>
                 <div class="col-md-12 form-group">
                   <label class="form-label">PinCode</label>
-                  <select  value={pincode} className="form-control" onChange={handleChangePin}>
+                  <select value={pincode} className="form-control" onChange={handleChangePin}>
                     <option value="">Select PinCode</option>
                     <option value="201201">201201</option>
                     <option value="201204">201204</option>
@@ -722,7 +760,7 @@ const UpdateAddressData = async (id) => {
               <button type="button" onClick={handleClose1} class="btn border-top btn-lg btn-block" data-dismiss="modal">Close</button>
             </div>
             <div class="col-6 m-0 p-0">
-              <button type="button" onClick={() =>UpdateAddressData(Addid)} class="btn btn-success btn-lg btn-block">Save changes</button>
+              <button type="button" onClick={() => UpdateAddressData(Addid)} class="btn btn-success btn-lg btn-block">Save changes</button>
             </div>
 
           </Modal.Footer>

@@ -42,7 +42,7 @@ const App = () => {
         <Route   path="/order" component={myOrder} />
          
          <Route   path="/details/:slug" component={ProductDetailsPage} />
-         <Route   path="/verify-you/tst/:slug" component={VerifyyouPage} />
+         <Route   path="/verify-you/:slug" component={VerifyyouPage} />
          <Route   path="/:slug" component={ProductPage} />
 
          {/* <Route  path="/cart" component={CartPage} /> */}
